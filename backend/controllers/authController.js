@@ -26,7 +26,6 @@ const login = (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
-  console.log(User);
   try {
     const hashedPassword = await hash(req.body.password);
 
@@ -34,9 +33,9 @@ const register = async (req, res, next) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    console.log(newUser);
+
     await newUser.save();
-    res.status(201).send();
+    res.status(201).send({ message: "Registration done" });
   } catch (error) {
     console.log(error);
     res.status(500).send();

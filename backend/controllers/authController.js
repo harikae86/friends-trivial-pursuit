@@ -42,4 +42,20 @@ const register = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res, next) => {
+  if (req.isUnauthenticated()) {
+    console.log(req.isUnauthenticated);
+    res.status(401);
+    res.json({ message: "Unauthorized" });
+  } else {
+    req.logout();
+    req.session.destroy(function (err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+    res.json({ message: "Logout success" });
+  }
+};
+
+module.exports = { register, login, logout };

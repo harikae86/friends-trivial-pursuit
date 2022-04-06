@@ -5,6 +5,7 @@ const auth = require("../controllers/authController");
 
 routes.post("/register", auth.register);
 routes.post("/login", auth.login);
+routes.get("/logout", auth.logout);
 
 routes.get("/profile", verify, (req, res, next) => {
   res.json(req.user);

@@ -46,3 +46,5 @@ questions = [
     ],
   },
 ];
+
+module.exports = questions;

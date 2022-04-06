@@ -3,11 +3,10 @@ const verify = require("./verify");
 const questions = require("../data");
 const routes = Router();
 
-routes.use(verify);
+// routes.use(verify);
 
 routes.get("/game", (req, res) => {
-  // return the current question
-  if (typeof req.session.currentQuestion === "undefined") {
+  if (!req.session.currentQuestion) {
     req.session.currentQuestion = 0;
     req.session.goodAnswers = 0;
   }
@@ -15,6 +14,7 @@ routes.get("/game", (req, res) => {
   if (!current) {
     return res.json({ good: req.session.goodAnswers });
   }
+
   const text = current.question;
   const answers = current.answers.map((item) => {
     return item.choice;
@@ -23,10 +23,9 @@ routes.get("/game", (req, res) => {
 });
 
 routes.post("/game", (req, res) => {
-  // store results, set the current question
-
   const answerIndex = req.body.answerIndex;
   const current = questions[req.session.currentQuestion];
+
   const answer = current.answers[answerIndex];
 
   if (answer.isAnswer === true) {

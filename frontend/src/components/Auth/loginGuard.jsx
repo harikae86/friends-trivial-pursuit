@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { userContext } from "../Auth";
+import { userContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 
 const loginGuard = (Component) => {

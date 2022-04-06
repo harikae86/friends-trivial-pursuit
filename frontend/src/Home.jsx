@@ -1,8 +1,11 @@
+import logo from "./images/result.svg";
+import { Logo } from "./Home.styles";
+
 const Home = () => {
   return (
     <>
       <h1>FRIENDS QUIZ</h1>
-      <div>Home</div>
+      <Logo src={logo} alt="main" />
     </>
   );
 };

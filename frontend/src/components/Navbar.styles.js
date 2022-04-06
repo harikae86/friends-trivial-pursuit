@@ -24,6 +24,7 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
   color: black;
   padding: 0.5rem;
+  transition: ease all 0.5s;
   :hover {
     background-color: rgb(233, 30, 35);
     border-radius: 10px;

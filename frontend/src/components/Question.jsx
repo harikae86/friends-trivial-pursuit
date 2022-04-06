@@ -1,33 +1,41 @@
+import {
+  QuestionText,
+  QuestionWrapper,
+  Answers,
+  Answer,
+} from "./Question.styles";
+import { Button } from "./UserForm.styles";
+
 const Question = (props) => {
   return (
-    <>
-      <h1>{props.question}</h1>
-      <ul>
+    <QuestionWrapper>
+      <QuestionText>{props.question}</QuestionText>
+      <Answers>
         {props.answers?.map((answer, index) => {
           return props.activeIndex === index ? (
-            <li
+            <Answer
               onClick={() => {
                 props.onSelectAnswer(index);
               }}
-              style={{ color: "blue" }}
+              style={{ color: "rgb(233, 30, 35)" }}
               key={index}
             >
               {answer}
-            </li>
+            </Answer>
           ) : (
-            <li
+            <Answer
               onClick={() => {
                 props.onSelectAnswer(index);
               }}
               key={index}
             >
               {answer}
-            </li>
+            </Answer>
           );
         })}
-      </ul>
-      <button onClick={props.onSubmitAnswer}>Send</button>
-    </>
+      </Answers>
+      <Button onClick={props.onSubmitAnswer}>Send</Button>
+    </QuestionWrapper>
   );
 };
 

@@ -28,11 +28,11 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/api", auth);
-app.use("/api", game);
 app.use(passport.initialize());
 app.use(passport.session());
 initPassport(passport);
+app.use("/api", auth);
+app.use("/api", game);
 
 app.get("/", (req, res) => {
   User.find({}, (err, found) => {

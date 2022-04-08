@@ -3,8 +3,6 @@ const verify = require("./verify");
 const questions = require("../data");
 const routes = Router();
 
-// routes.use(verify);
-
 routes.get("/game", (req, res) => {
   if (!req.session.currentQuestion) {
     req.session.currentQuestion = 0;

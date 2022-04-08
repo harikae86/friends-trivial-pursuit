@@ -5,7 +5,6 @@ import Question from "./Question";
 const fetchQuestion = async () => {
   const response = await fetch("/api/game");
   const data = await response.json();
-  console.log(data);
   return data;
 };
 

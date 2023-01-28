@@ -12,7 +12,7 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: call the other repo
+    - name: call the other repod
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         EVENT: test-workflow

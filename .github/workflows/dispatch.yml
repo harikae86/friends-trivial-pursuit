@@ -26,7 +26,7 @@ jobs:
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
     - name: Trigger main workflow
-      if: ${{ steps.check_time_diff.outputs.time_diff }} > 60
+      if: ${{ steps.check_time_diff.outputs.time_diff }} > 3
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
         EVENT: test-workflow

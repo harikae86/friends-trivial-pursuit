@@ -3,16 +3,39 @@ name: Build Artifacts
 on: workflow_dispatch
 
 jobs:
+  check-if-workflow-ran:
+    runs-on: ubuntu-latest
+    
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Wait for 10 minutes
-      run: |
-        curl -s -o /dev/null -w "%{http_code}" https://httpbin.org/delay/600
-
+    - name: Get last workflow run time
+        id: last_run_time
+        env: 
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          EVENT: test-workflow
+          ORG: harikae86
+          REPO: vue-beer-explorer
+        run: |
+          # Get the date and time of the last run of the main workflow
+          LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/main.yaml/runs?per_page=1&status=completed&event=repository_dispatch&branch=main" | jq -r '.workflow_runs[0].created_at')
+          echo "::set-output name=last_run_time::$LAST_RUN_TIME"
+        shell: bash
+      - name: Check time difference
+        id: check_time_diff
+        run: |
+          LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
+          CURR_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
+          echo "::set-output name=time_diff::$TIME_DIFF"
+        shell: bash
+        env:
+          INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
+      - name: Trigger main workflow
+        if: ${{ steps.check_time_diff.outputs.time_diff }} > 60
     - name: call the other repo
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
@@ -20,9 +43,5 @@ jobs:
         ORG: harikae86
         REPO: vue-beer-explorer
       run: |
-        echo '{"event_type": "test-workflow"}' > event.json
-        curl -X POST -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" \
-          -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Content-Type: application/json" \
-          -d @event.json \
-          "https://api.github.com/repos/${ORG}/${REPO}/dispatches?delay=10m"
+        echo ${{github.event.name}}
+        curl -d "{\"event_type\": \"${EVENT}\"}" -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.everest-preview+json" "https://api.github.com/repos/${ORG}/${REPO}/dispatches"

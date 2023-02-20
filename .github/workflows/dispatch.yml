@@ -18,7 +18,7 @@ jobs:
       run: |
         echo '{"event_type": "test-workflow"}' > event.json
         curl -X POST -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" \
-        -H "Accept: application/vnd.github.everest-preview+json" \
-            -H "Content-Type: application/json" \
-            -d @event.json \
-            "https://api.github.com/repos/owner/repo/dispatches?delay=10m"
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Content-Type: application/json" \
+          -d @event.json \
+          "https://api.github.com/repos/${ORG}/${REPO}/dispatches?delay=10m"

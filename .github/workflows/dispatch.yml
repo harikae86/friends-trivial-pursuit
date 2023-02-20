@@ -12,7 +12,6 @@ jobs:
     - name: Get last workflow run time
       id: last_run_time
       run: |
-        # Get the date and time of the last run of the main workflow
         LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/demo.yml/runs?per_page=1&status=completed&event=repository_dispatch&branch=master" | jq -r '.workflow_runs[0].created_at')
         echo "{last_run_time}={$LAST_RUN_TIME}" >> $GITHUB_OUTPUT
       shell: bash

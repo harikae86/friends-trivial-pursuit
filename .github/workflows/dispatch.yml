@@ -13,25 +13,24 @@ jobs:
       with:
         fetch-depth: 1
     - name: Get last workflow run time
-        id: last_run_time
-        run: |
-          # Get the date and time of the last run of the main workflow
-          LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/main.yaml/runs?per_page=1&status=completed&event=repository_dispatch&branch=main" | jq -r '.workflow_runs[0].created_at')
-          echo "::set-output name=last_run_time::$LAST_RUN_TIME"
-        shell: bash
-      - name: Check time difference
-        id: check_time_diff
-        run: |
-          LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
-          CURR_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
-          echo "::set-output name=time_diff::$TIME_DIFF"
-        shell: bash
-        env:
-          INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
-      - name: Trigger main workflow
-        if: ${{ steps.check_time_diff.outputs.time_diff }} > 60
-    - name: call the other repo
+      id: last_run_time
+      run: |
+        # Get the date and time of the last run of the main workflow
+        LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/main.yaml/runs?per_page=1&status=completed&event=repository_dispatch&branch=main" | jq -r '.workflow_runs[0].created_at')
+        echo "::set-output name=last_run_time::$LAST_RUN_TIME"
+      shell: bash
+    - name: Check time difference
+      id: check_time_diff
+      run: |
+        LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
+        CURR_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
+        echo "::set-output name=time_diff::$TIME_DIFF"
+      shell: bash
+      env:
+        INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
+    - name: Trigger main workflow
+      if: ${{ steps.check_time_diff.outputs.time_diff }} > 60
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
         EVENT: test-workflow

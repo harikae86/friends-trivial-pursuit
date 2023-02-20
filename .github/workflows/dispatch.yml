@@ -14,11 +14,6 @@ jobs:
         fetch-depth: 1
     - name: Get last workflow run time
         id: last_run_time
-        env: 
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-          EVENT: test-workflow
-          ORG: harikae86
-          REPO: vue-beer-explorer
         run: |
           # Get the date and time of the last run of the main workflow
           LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/main.yaml/runs?per_page=1&status=completed&event=repository_dispatch&branch=main" | jq -r '.workflow_runs[0].created_at')

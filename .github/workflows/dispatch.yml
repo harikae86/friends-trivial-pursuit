@@ -21,7 +21,7 @@ jobs:
         LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
         CURR_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
         TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
-        echo "{time_diff}={$TIME_DIFF}" >> $GITHUB_OUTPUT
+        echo "time_diff=$TIME_DIFF" >> $GITHUB_OUTPUT
       shell: bash
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}

@@ -18,10 +18,6 @@ jobs:
     - name: print last run time
       run: echo $LAST_RUN_TIME
     - name: Check time difference
-      env:
-        INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
-      with:
-        INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
       id: check_time_diff
       run: |
         LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
@@ -29,6 +25,8 @@ jobs:
         TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
         echo "time_diff=$TIME_DIFF" >> $GITHUB_OUTPUT
       shell: bash
+      env:
+        INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
     - name: Trigger main workflow
       if: ${{ steps.check_time_diff.outputs.time_diff }} > 60
       env:

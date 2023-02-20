@@ -13,7 +13,7 @@ jobs:
       id: last_run_time
       run: |
         # Get the date and time of the last run of the main workflow
-        LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/main.yaml/runs?per_page=1&status=completed&event=repository_dispatch&branch=master" | jq -r '.workflow_runs[0].created_at')
+        LAST_RUN_TIME=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" "https://api.github.com/repos/harikae86/vue-beer-explorer/actions/workflows/demo.yml/runs?per_page=1&status=completed&event=repository_dispatch&branch=master" | jq -r '.workflow_runs[0].created_at')
         echo "{last_run_time}={$LAST_RUN_TIME}" >> $GITHUB_OUTPUT
       shell: bash
     - name: Check time difference
@@ -22,7 +22,7 @@ jobs:
         LAST_RUN_TIME=$INPUT_LAST_RUN_TIME
         CURR_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
         TIME_DIFF=$((($(date -ud $CURR_TIME +'%s') - $(date -ud $LAST_RUN_TIME +'%s'))/60))
-        echo "::set-output name=time_diff::$TIME_DIFF"
+        echo "{time_diff}={$TIME_DIFF}" >> $GITHUB_OUTPUT
       shell: bash
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}

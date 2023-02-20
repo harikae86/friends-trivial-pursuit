@@ -9,6 +9,10 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
+    - name: Wait for 10 minutes
+      run: |
+        curl -s -o /dev/null -w "%{http_code}" https://httpbin.org/delay/600
+
     - name: call the other repo
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}

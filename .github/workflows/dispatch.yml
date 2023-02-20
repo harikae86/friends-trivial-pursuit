@@ -4,14 +4,13 @@ on: workflow_dispatch
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    environment: 10minDelay
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-
+    - name: Delay
+      run: sleep 600
     - name: call the other repo
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}

@@ -30,7 +30,7 @@ jobs:
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
     - name: Trigger main workflow
-      if: $TIME_DIFF > 100
+      if: TIME_DIFF > 100
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
         EVENT: test-workflow

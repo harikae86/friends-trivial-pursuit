@@ -26,12 +26,12 @@ jobs:
         echo "time_diff=$TIME_DIFF" >> $GITHUB_ENV
         echo "time_diff: $TIME_DIFF"
         echo "last_run_time: $INPUT_LAST_RUN_TIME"
-        echo ${{ env.time_diff > 100 }} 
+        echo ${{ env.time_diff > 5 }} 
       shell: bash
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
     - name: Trigger main workflow
-      if: ${{ env.time_diff > 100 }}
+      if: ${{ env.time_diff > 5 }}
       env:
         GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
         EVENT: test-workflow
@@ -39,4 +39,4 @@ jobs:
         REPO: vue-beer-explorer
       run: |
         echo ${{ env.time_diff }}
-        curl -d "{\"event_type\": \"${EVENT}\"}" -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.everest-preview+json" "https://api.github.com/repos/${ORG}/${REPO}/dispatches"
+        curl -d '{"event_type": "test-workflow", "client_payload": {"delay": "10m"}}' -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.everest-preview+json" "https://api.github.com/repos/${ORG}/${REPO}/dispatches"

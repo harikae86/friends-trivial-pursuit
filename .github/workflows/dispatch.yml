@@ -1,6 +1,8 @@
 name: Build Artifacts
 
-on: 
+on:
+  pull_request: 
+    types: [ closed ]
   schedule:
     - cron: "*/5 * * * *"
 

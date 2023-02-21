@@ -1,10 +1,13 @@
 name: Build Artifacts
 
-on: workflow_dispatch
+on: 
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.event.pull_request.merged
     steps:
     - uses: actions/checkout@v1
       with:

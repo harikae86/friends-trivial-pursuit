@@ -31,7 +31,6 @@ jobs:
         echo "time_diff: $TIME_DIFF"
         echo "last_run_time: $INPUT_LAST_RUN_TIME"
         echo ${{ env.time_diff > 5 }} 
-      shell: bash
       env:
         INPUT_LAST_RUN_TIME: ${{ steps.last_run_time.outputs.last_run_time }}
     - name: Trigger main workflow
